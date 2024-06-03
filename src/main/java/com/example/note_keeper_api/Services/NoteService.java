@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NoteService {
@@ -44,4 +45,12 @@ public class NoteService {
         noteRepo.deleteById(id);
     }
 
+    // поиск по подстроке содержащейся в названии заметки или в ее содержимом
+    //TODO:ЗАМЕНИТЬ НА ЗАПРОС БД В NoteRepository
+    public List<NoteEntity> searchNotes(String keyword){
+        return noteRepo.findAll()
+                .stream()
+                .filter(s->s.getContent().contains(keyword) || s.getTitle().contains(keyword))
+                .collect(Collectors.toList());
+    }
 }
