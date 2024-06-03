@@ -2,39 +2,42 @@ package com.example.note_keeper_api.Entities;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@Component
-@Scope("singleton")
+
+@Entity
 public class NoteEntity {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String title;
     private String content;
+    private LocalDateTime timeOfCreation;
+    private LocalDateTime timeOfLastModification;
 
     public NoteEntity(){
-    }
 
-    public NoteEntity(int id, String title, String content) {
+    }
+    public NoteEntity(Long id, String title, String content) {
         this.id = id;
         this.title = title;
         this.content = content;
     }
 
-    @PostConstruct
-    void init(){
-        System.out.println("created bean");
-    }
-    @PreDestroy
-    void destroy(){
-        System.out.println("bean destriyed");
-    }
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -52,5 +55,21 @@ public class NoteEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public LocalDateTime getTimeOfCreation() {
+        return timeOfCreation;
+    }
+
+    public void setTimeOfCreation(LocalDateTime timeOfCreation) {
+        this.timeOfCreation = timeOfCreation;
+    }
+
+    public LocalDateTime getTimeOfLastModification() {
+        return timeOfLastModification;
+    }
+
+    public void setTimeOfLastModification(LocalDateTime timeOfLastModification) {
+        this.timeOfLastModification = timeOfLastModification;
     }
 }
