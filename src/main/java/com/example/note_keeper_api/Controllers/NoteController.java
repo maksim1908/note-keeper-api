@@ -34,6 +34,14 @@ public class NoteController{
         return noteService.createNote(new NoteEntity(noteDTO.getTitle(),noteDTO.getContent()));
     }
 
+    @PutMapping("notes/update/{id}")
+    public NoteEntity updateNote(@PathVariable Long id,@RequestBody NoteDTO noteDTO){
+        return noteService.updateNote(
+                id,
+                NoteDTO.toNoteEntity(noteDTO)
+        );
+    }
+
     @DeleteMapping("/notes/delete/{id}")
     public void deleteNote(@PathVariable Long id){
         noteService.deleteNote(id);
