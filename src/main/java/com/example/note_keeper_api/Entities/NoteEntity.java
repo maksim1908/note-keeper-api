@@ -1,15 +1,6 @@
 package com.example.note_keeper_api.Entities;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 
@@ -27,10 +18,11 @@ public class NoteEntity {
     public NoteEntity(){
 
     }
-    public NoteEntity(Long id, String title, String content) {
-        this.id = id;
+    public NoteEntity(String title, String content) {
         this.title = title;
         this.content = content;
+        this.timeOfCreation = LocalDateTime.now();
+        this.timeOfLastModification = LocalDateTime.now();
     }
 
     public Long getId() {
