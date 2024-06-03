@@ -13,8 +13,5 @@ public class NoteController {
     public ResponseEntity getAll(){
         return new ResponseEntity<>(new NoteEntity(2,"sdsds","22"),HttpStatus.CREATED);
     }
-    @GetMapping("/notes/{id}")
-    public ResponseEntity getById(@PathVariable("id") int id){
-        return new ResponseEntity<>(new NoteEntity(2,"sdsds","22"), HttpStatus.OK);
-    }
+
 }
