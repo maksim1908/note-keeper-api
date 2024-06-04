@@ -53,4 +53,11 @@ public class NoteService {
                 .filter(s->s.getContent().contains(keyword) || s.getTitle().contains(keyword))
                 .collect(Collectors.toList());
     }
+
+    public List<NoteEntity> searchNotes(String keyword1,String keyword2){
+        return noteRepo.findAll()
+                .stream()
+                .filter(s->s.getContent().contains(keyword1) || s.getTitle().contains(keyword2))
+                .collect(Collectors.toList());
+    }
 }
