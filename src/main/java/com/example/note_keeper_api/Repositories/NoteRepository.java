@@ -11,4 +11,5 @@ import java.util.List;
 public interface NoteRepository extends JpaRepository<NoteEntity,Long> {
     List<NoteEntity> findByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(String content, String title);
     List<NoteEntity> findByTitle(String title);
+    List<NoteEntity> findByUserId(Long id);
 }

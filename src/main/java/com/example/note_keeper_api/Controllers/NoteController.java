@@ -2,8 +2,11 @@ package com.example.note_keeper_api.Controllers;
 
 import com.example.note_keeper_api.DTO.NoteDTO;
 import com.example.note_keeper_api.Entities.NoteEntity;
+import com.example.note_keeper_api.Execeptions.NotesNotFoundForCurrentUser;
+import com.example.note_keeper_api.Repositories.NoteRepository;
 import com.example.note_keeper_api.Services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ public class NoteController{
     @Autowired
     public NoteController(NoteService noteService) {
         this.noteService = noteService;
+
     }
 
     @GetMapping("/notes")
@@ -62,6 +66,15 @@ public class NoteController{
         }
     }
 
+    @GetMapping("/notes/searchByUserId")
+    public ResponseEntity<List<NoteEntity>> getNoteByUserId(@RequestParam(name = "userId") Long userId){
+        try {
+            List<NoteEntity> noteEntities = noteService.searchByUserId(userId);
+            return ResponseEntity.ok().body(noteEntities);
+        } catch (NotesNotFoundForCurrentUser e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
 

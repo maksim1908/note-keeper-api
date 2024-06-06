@@ -2,6 +2,7 @@ package com.example.note_keeper_api.Services;
 
 import com.example.note_keeper_api.Entities.NoteEntity;
 import com.example.note_keeper_api.Execeptions.NoteNotFoundExeception;
+import com.example.note_keeper_api.Execeptions.NotesNotFoundForCurrentUser;
 import com.example.note_keeper_api.Repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -58,5 +59,14 @@ public class NoteService {
 
     public List<NoteEntity> searchByTitle(String title){
         return noteRepo.findByTitle(title);
+    }
+
+
+    public List<NoteEntity> searchByUserId(Long id) throws NotesNotFoundForCurrentUser {
+        List<NoteEntity> byUserId = noteRepo.findByUserId(id);
+        if(byUserId.isEmpty()){
+            throw new NotesNotFoundForCurrentUser("Для данного пользователя еще нет заметок");
+        }
+        return byUserId;
     }
 }
