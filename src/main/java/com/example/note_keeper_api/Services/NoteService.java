@@ -1,6 +1,7 @@
 package com.example.note_keeper_api.Services;
 
 import com.example.note_keeper_api.Entities.NoteEntity;
+import com.example.note_keeper_api.Execeptions.NoteNotFoundExeception;
 import com.example.note_keeper_api.Repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -48,16 +49,14 @@ public class NoteService {
     // поиск по подстроке содержащейся в названии заметки или в ее содержимом
     //TODO:ЗАМЕНИТЬ НА ЗАПРОС БД В NoteRepository
     public List<NoteEntity> searchNotes(String keyword){
-        return noteRepo.findAll()
+       /* return noteRepo.findAll()
                 .stream()
                 .filter(s->s.getContent().contains(keyword) || s.getTitle().contains(keyword))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
+        return noteRepo.findByContentContainingIgnoreCaseOrTitleContainingIgnoreCase(keyword,keyword);
     }
 
-    public List<NoteEntity> searchNotes(String keyword1,String keyword2){
-        return noteRepo.findAll()
-                .stream()
-                .filter(s->s.getContent().contains(keyword1) || s.getTitle().contains(keyword2))
-                .collect(Collectors.toList());
+    public List<NoteEntity> searchByTitle(String title){
+        return noteRepo.findByTitle(title);
     }
 }

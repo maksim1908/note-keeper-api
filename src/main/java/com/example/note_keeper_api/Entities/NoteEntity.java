@@ -15,6 +15,12 @@ public class NoteEntity {
     private LocalDateTime timeOfCreation;
     private LocalDateTime timeOfLastModification;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",nullable = false)
+    private User user;
+
+
+
     public NoteEntity(){
 
     }
@@ -57,10 +63,18 @@ public class NoteEntity {
         this.timeOfCreation = timeOfCreation;
     }
 
+
     public LocalDateTime getTimeOfLastModification() {
         return timeOfLastModification;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
     public void setTimeOfLastModification(LocalDateTime timeOfLastModification) {
         this.timeOfLastModification = timeOfLastModification;
     }
