@@ -1,5 +1,6 @@
 package com.example.note_keeper_api.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -16,7 +17,8 @@ public class NoteEntity {
     private LocalDateTime timeOfLastModification;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id",nullable = true)
+    @JsonIgnore
     private User user;
 
 
@@ -78,4 +80,6 @@ public class NoteEntity {
     public void setTimeOfLastModification(LocalDateTime timeOfLastModification) {
         this.timeOfLastModification = timeOfLastModification;
     }
+
+
 }

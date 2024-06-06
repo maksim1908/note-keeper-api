@@ -1,5 +1,6 @@
 package com.example.note_keeper_api.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -61,4 +62,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+
 }
