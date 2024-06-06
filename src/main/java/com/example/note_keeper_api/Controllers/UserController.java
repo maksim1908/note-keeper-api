@@ -58,6 +58,7 @@ public class UserController {
         try {
             userService.deleteById(id);
             return  ResponseEntity.ok("User deleted successfully");
+
         } catch (UserNotFoundException e) {
            return ResponseEntity.notFound().build();
         }
