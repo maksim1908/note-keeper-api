@@ -4,4 +4,13 @@ public class NoteNotFoundExeception extends Exception {
     public NoteNotFoundExeception(String message) {
         super(message);
     }
+    public NoteNotFoundExeception(String message) {
+        super(message);
+    }
+    public NoteNotFoundExeception(String message) {
+        super(message);
+    }public NoteNotFoundExeception(String message) {
+        super(message);
+    }
+
 }

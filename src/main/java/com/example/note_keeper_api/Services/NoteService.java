@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class NoteService {
+   
     private final NoteRepository noteRepo;
 
     @Autowired

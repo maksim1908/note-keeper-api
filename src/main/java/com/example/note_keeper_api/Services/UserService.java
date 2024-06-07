@@ -1,13 +1,20 @@
 package com.example.note_keeper_api.Services;
 
 import com.example.note_keeper_api.DTO.UserDTO;
+import com.example.note_keeper_api.Entities.Role;
 import com.example.note_keeper_api.Entities.User;
 import com.example.note_keeper_api.Execeptions.UserNotFoundException;
 import com.example.note_keeper_api.Execeptions.UsernameAlreadyExistException;
+import com.example.note_keeper_api.Repositories.RoleRepository;
 import com.example.note_keeper_api.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,8 +22,15 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
+    @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserService() {}
     @Autowired
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
@@ -27,6 +41,9 @@ public class UserService {
         if(byUsername.isPresent()){
             throw new UsernameAlreadyExistException(String.format("User with username {%s} already exist",user.getUsername()));
         }
+
+        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
     public List<UserDTO> getAll() {
@@ -55,4 +72,14 @@ public class UserService {
         }
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        Optional<User> user = userRepository.findByUsername(username);
+        if(user.isPresent()){
+            return user.get();
+        }
+        throw new UsernameNotFoundException("User not found with username: " + username);
+
+    }
 }
