@@ -1,4 +1,4 @@
-package com.example.note_keeper_api.Entities;
+package com.example.note_keeper_api.Entitie;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-public class NoteEntity {
+public class Note {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,10 @@ public class NoteEntity {
 
 
 
-    public NoteEntity(){
+    public Note(){
 
     }
-    public NoteEntity(String title, String content) {
+    public Note(String title, String content) {
         this.title = title;
         this.content = content;
         this.timeOfCreation = LocalDateTime.now();
