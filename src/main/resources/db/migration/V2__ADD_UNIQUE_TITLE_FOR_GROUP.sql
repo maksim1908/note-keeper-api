@@ -1,0 +1,1 @@
+ALTER TABLE _group ADD CONSTRAINT unique_title UNIQUE (title);
