@@ -1,0 +1,41 @@
+version: '3.8'
+
+volumes:
+  note_keeper_data:
+
+services:
+  note-keeper-api:
+    container_name: note-keeper-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      note-keeper-db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  note-keeper-db:
+    image: postgres:16
+    container_name: note-keeper-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: NoteKeeperDB
+    ports:
+      - "5433:5432"
+    volumes:
+      - note_keeper_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d note-keeper-db -U postgres || exit 1" ]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    restart: unless-stopped
+
+
+
+
+
