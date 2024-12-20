@@ -1375,3 +1375,38 @@ Caused by: org.postgresql.util.PSQLException: ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ ï¿½ï
 2024-12-20T23:13:27.708+03:00  INFO 15452 --- [note-keeper-api] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2024-12-20T23:13:27.711+03:00  INFO 15452 --- [note-keeper-api] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2024-12-20T23:13:27.715+03:00  INFO 15452 --- [note-keeper-api] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-12-20T23:15:55.573+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.e.N.NoteKeeperApiApplication           : Starting NoteKeeperApiApplication using Java 22.0.2 with PID 22412 (C:\Users\proro\note-keeper-api\target\classes started by proro in C:\Users\proro\note-keeper-api)
+2024-12-20T23:15:55.576+03:00 DEBUG 22412 --- [note-keeper-api] [restartedMain] o.e.N.NoteKeeperApiApplication           : Running with Spring Boot v3.3.4, Spring v6.1.13
+2024-12-20T23:15:55.576+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.e.N.NoteKeeperApiApplication           : No active profile set, falling back to 1 default profile: "default"
+2024-12-20T23:15:55.620+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-12-20T23:15:55.620+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-12-20T23:15:56.509+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-20T23:15:56.575+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 59 ms. Found 3 JPA repository interfaces.
+2024-12-20T23:15:57.220+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2024-12-20T23:15:57.240+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-20T23:15:57.241+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-12-20T23:15:57.320+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-20T23:15:57.320+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1699 ms
+2024-12-20T23:15:57.336+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] f.a.AutowiredAnnotationBeanPostProcessor : Autowired annotation is not supported on static fields: private static java.lang.String org.example.NoteKeeperApi.Service.JwtService.JwtSecurityService.SECRET_KEY
+2024-12-20T23:15:57.565+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-20T23:15:57.751+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@78c90075
+2024-12-20T23:15:57.752+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-20T23:15:57.784+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/NoteKeeperDB (PostgreSQL 16.4)
+2024-12-20T23:15:57.837+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 3 migrations (execution time 00:00.031s)
+2024-12-20T23:15:57.909+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2024-12-20T23:15:57.914+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2024-12-20T23:15:58.016+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-20T23:15:58.091+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-12-20T23:15:58.139+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-12-20T23:15:58.449+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-20T23:15:59.462+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-12-20T23:15:59.502+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-20T23:15:59.784+03:00 DEBUG 22412 --- [note-keeper-api] [restartedMain] o.e.N.Config.JwtAuthenticationFilter     : Filter 'jwtAuthenticationFilter' configured for use
+2024-12-20T23:15:59.856+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authProvider
+2024-12-20T23:15:59.991+03:00  WARN 22412 --- [note-keeper-api] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-20T23:16:01.109+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-12-20T23:16:01.144+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2024-12-20T23:16:01.154+03:00  INFO 22412 --- [note-keeper-api] [restartedMain] o.e.N.NoteKeeperApiApplication           : Started NoteKeeperApiApplication in 6.004 seconds (process running for 6.743)
+2024-12-20T23:16:07.279+03:00  INFO 22412 --- [note-keeper-api] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-12-20T23:16:07.281+03:00  INFO 22412 --- [note-keeper-api] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-12-20T23:16:07.284+03:00  INFO 22412 --- [note-keeper-api] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
