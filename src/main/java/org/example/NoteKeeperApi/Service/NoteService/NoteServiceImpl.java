@@ -41,7 +41,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
 //        Note note = Optional.ofNullable(noteRepo.findByIdAndUserId(noteId , getActiveUser().getId()))
 //                .orElseThrow(NoteNotFoundException::new);
         Note foundedNote = noteRepo.findByIdAndUserId(noteId, getActiveUser().getId());
-        if(foundedNote == null) {
+        if (foundedNote == null) {
             throw new NoteNotFoundException();
         }
         LOGGER.debug("founded note {}", foundedNote);
@@ -79,7 +79,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
 
     @Override
     public void deleteNote(Long noteId) {
-        Note note = Optional.ofNullable(noteRepo.findByIdAndUserId(noteId , getActiveUser().getId()))
+        Note note = Optional.ofNullable(noteRepo.findByIdAndUserId(noteId, getActiveUser().getId()))
                 .orElseThrow(NoteNotFoundException::new);
         noteRepo.delete(note);
     }

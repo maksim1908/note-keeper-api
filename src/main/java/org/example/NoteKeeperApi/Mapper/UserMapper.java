@@ -12,7 +12,7 @@ public class UserMapper {
     private ModelMapper modelMapper;
 
     public UserResponseDto toDto(User user) {
-        if(user == null) {
+        if (user == null) {
             return null;
         }
         return modelMapper.map(user, UserResponseDto.class);

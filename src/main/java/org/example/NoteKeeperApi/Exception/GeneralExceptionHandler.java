@@ -3,6 +3,7 @@ package org.example.NoteKeeperApi.Exception;
 import org.example.NoteKeeperApi.Exception.ServiceExceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +36,11 @@ public class GeneralExceptionHandler {
             {
                     UserAlreadyExistException.class,
                     UserNotFoundException.class,
-                    GroupAlreadyExistException.class
+                    GroupAlreadyExistException.class,
+                    BadCredentialsException.class
             }
     )
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleBadRequestExceptions(RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }

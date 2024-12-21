@@ -24,14 +24,14 @@ public class AuthController {
         return authService.register(registerRequestDto);
     }
 
-    @Operation(summary = "login")
-    @PostMapping("/login")
+    @Operation(summary = "sign-in")
+    @PostMapping("/sign-in")
     public LoginResponseDto login(@RequestBody @Valid LoginRequestDto loginRequestDto) {
         return authService.login(loginRequestDto);
     }
 
     @Operation(summary = "get new jwt token")
-    @PostMapping("/refresh")
+    @PostMapping("/refresh-token")
     public RefreshTokenResponseDto refresh(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
         return authService.refresh(refreshTokenRequestDto);
     }

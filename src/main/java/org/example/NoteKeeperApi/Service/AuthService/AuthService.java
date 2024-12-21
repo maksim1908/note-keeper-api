@@ -32,29 +32,30 @@ public class AuthService {
         if (userRepo.findByUsername(registerRequestDto.getUsername()).isPresent()) {
             throw new UserAlreadyExistException();
         }
-        if (userRepo.findByEmail(registerRequestDto.getEmail()) != null){
+        if (userRepo.findByEmail(registerRequestDto.getEmail()) != null) {
             throw new UserAlreadyExistException();
         }
-        User appUser = new User();
-        appUser.setUsername(registerRequestDto.getUsername());
-        appUser.setEmail(registerRequestDto.getEmail());
-        appUser.setName(registerRequestDto.getName());
-        appUser.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
-        appUser.setRole(AppRole.USER);
+        User appUser = User.builder()
+                .username(registerRequestDto.getUsername())
+                .email(registerRequestDto.getEmail())
+                .name(registerRequestDto.getName())
+                .password(passwordEncoder.encode(registerRequestDto.getPassword()))
+                .role(AppRole.USER)
+                .build();
         return userMapper.toDto(userRepo.save(appUser));
     }
 
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequestDto.getUsername(),
-                        loginRequestDto.getPassword()));
-
-        User user = userRepo
-                .findByUsername(loginRequestDto.getUsername())
+        Authentication authentication = authenticationManager
+                .authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                loginRequestDto.getUsername(),
+                                loginRequestDto.getPassword()
+                        )
+                );
+        User user = userRepo.findByUsername(loginRequestDto.getUsername())
                 .orElseThrow(UserNotFoundException::new);
-        if(!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
             throw new BadCredentialsException("Passwords do not match");
         }
         String token = jwtSecurityService.generateToken(user);
@@ -71,9 +72,10 @@ public class AuthService {
     public RefreshTokenResponseDto refresh(RefreshTokenRequestDto refreshTokenRequestDto) {
         String jwt = refreshTokenRequestDto.getRefreshToken();
         String username = jwtSecurityService.extractUsername(jwt);
-        User user = userRepo
-                .findByUsername(username)
-                .orElseThrow();
+
+        User user = userRepo.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+
         if (jwtSecurityService.validateToken(jwt, user)) {
             RefreshTokenResponseDto refreshTokenResponseDto = new RefreshTokenResponseDto();
             refreshTokenResponseDto.setJwtToken(jwtSecurityService.generateToken(user));

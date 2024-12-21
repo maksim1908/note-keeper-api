@@ -49,5 +49,5 @@ public class GroupController {
         groupService.removeGroup(id);
     }
 
-    public static final String  ROOT_PATH = "/api/group";
+    public static final String ROOT_PATH = "/api/group";
 }

@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NoteRepo extends JpaRepository<Note, Long> {
     Page<Note> findAllByUserId(Long userId, Pageable pageable);
+
     Note findByIdAndUserId(Long id, Long userId);
 }

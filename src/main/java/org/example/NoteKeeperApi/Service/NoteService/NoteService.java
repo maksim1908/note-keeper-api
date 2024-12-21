@@ -7,9 +7,14 @@ import org.springframework.data.domain.Pageable;
 
 public interface NoteService {
     Page<NoteResponseDto> getAllNotes(Pageable pageable);
+
     NoteResponseDto getNoteById(Long noteId);
+
     NoteResponseDto createNote(NotePersistDto notePersistDto);
-    NoteResponseDto editNote(Long id , NotePersistDto notePersistDto);
+
+    NoteResponseDto editNote(Long id, NotePersistDto notePersistDto);
+
     void deleteNote(Long id);
+
     NoteResponseDto moveNoteToGroup(Long noteId, Long destGroupId);
 }

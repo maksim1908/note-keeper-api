@@ -32,19 +32,19 @@ public class NoteController {
 
     @PostMapping
     @Operation(summary = "Create new note")
-    public NoteResponseDto createNote(@Valid @RequestBody NotePersistDto notePersistDto) {
+    public NoteResponseDto createNote(@RequestBody @Valid NotePersistDto notePersistDto) {
         return noteService.createNote(notePersistDto);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Update note by id")
-    public  NoteResponseDto updateNote(@PathVariable Long id, @RequestBody @Valid NotePersistDto notePersistDto) {
+    public NoteResponseDto updateNote(@PathVariable Long id, @RequestBody @Valid NotePersistDto notePersistDto) {
         return noteService.editNote(id, notePersistDto);
     }
 
     @PutMapping("/{id}/moveTo")
     public NoteResponseDto moveNoteToGroup(@PathVariable Long id,
-                                            @RequestParam(required = true, name = "groupId") Long groupId) {
+                                           @RequestParam(required = true, name = "groupId") Long groupId) {
         return noteService.moveNoteToGroup(id, groupId);
     }
 
