@@ -3,6 +3,7 @@ package org.example.NoteKeeperApi.Service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.example.NoteKeeperApi.Dto.Group.GroupPersistDto;
 import org.example.NoteKeeperApi.Dto.Group.GroupResponseDto;
+import org.example.NoteKeeperApi.Dto.Group.GroupWithoutNotesDto;
 import org.example.NoteKeeperApi.Entity.Group;
 import org.example.NoteKeeperApi.Exception.ServiceExceptions.GroupAlreadyExistException;
 import org.example.NoteKeeperApi.Exception.ServiceExceptions.GroupNotFoundException;
@@ -25,11 +26,11 @@ public class GroupServiceImpl extends BaseService implements GroupService {
     private final Logger LOGGER = LoggerFactory.getLogger(GroupServiceImpl.class);
 
     @Override
-    public List<GroupResponseDto> getAllGroups() {
+    public List<GroupWithoutNotesDto> getAllGroups() {
         LOGGER.debug("Get all groups");
         return groupRepo.findAllByUserId(getActiveUser().getId())
                 .stream()
-                .map(groupMapper::toDto)
+                .map(groupMapper::toDtoWithoutNotes)
                 .collect(Collectors.toList());
     }
 

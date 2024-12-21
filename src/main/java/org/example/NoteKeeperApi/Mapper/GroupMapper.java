@@ -3,6 +3,7 @@ package org.example.NoteKeeperApi.Mapper;
 import jakarta.persistence.Column;
 import org.example.NoteKeeperApi.Dto.Group.GroupPersistDto;
 import org.example.NoteKeeperApi.Dto.Group.GroupResponseDto;
+import org.example.NoteKeeperApi.Dto.Group.GroupWithoutNotesDto;
 import org.example.NoteKeeperApi.Dto.Note.NoteResponseDto;
 import org.example.NoteKeeperApi.Entity.Group;
 import org.example.NoteKeeperApi.Entity.Note;
@@ -27,6 +28,13 @@ public class GroupMapper {
         GroupResponseDto groupResponseDto = modelMapper.map(group, GroupResponseDto.class);
         groupResponseDto.setNotes(notesToDto(group.getNotes()));
         return groupResponseDto;
+    }
+
+    public GroupWithoutNotesDto toDtoWithoutNotes(Group group) {
+        if (group == null) {
+            return null;
+        }
+        return modelMapper.map(group, GroupWithoutNotesDto.class);
     }
 
     public Group toEntity(GroupPersistDto groupDto) {

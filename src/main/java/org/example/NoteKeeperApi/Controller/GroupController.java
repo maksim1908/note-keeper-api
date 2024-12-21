@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.NoteKeeperApi.Dto.Group.GroupPersistDto;
 import org.example.NoteKeeperApi.Dto.Group.GroupResponseDto;
+import org.example.NoteKeeperApi.Dto.Group.GroupWithoutNotesDto;
 import org.example.NoteKeeperApi.Service.GroupService.GroupService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class GroupController {
 
     @GetMapping
     @Operation(summary = "Get all groups")
-    public List<GroupResponseDto> getAllGroups() {
+    public List<GroupWithoutNotesDto> getAllGroups() {
         return groupService.getAllGroups();
     }
 
