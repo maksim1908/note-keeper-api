@@ -17,7 +17,7 @@ public class GeneralExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public Map<String,Object> handleValidationException(MethodArgumentNotValidException ex) {
+    public Map<String, Object> handleValidationException(MethodArgumentNotValidException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("status", HttpStatus.BAD_REQUEST.value());
@@ -31,32 +31,25 @@ public class GeneralExceptionHandler {
         return response;
     }
 
-    @ExceptionHandler(UserAlreadyExistException.class)
-    public ResponseEntity<String> handleUserAlreadyExistException(UserAlreadyExistException ex) {
-        return new ResponseEntity<>("User already exists with this username or email", HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(
+            {
+                    UserAlreadyExistException.class,
+                    UserNotFoundException.class,
+                    GroupAlreadyExistException.class
+            }
+    )
+    public ResponseEntity<String> handleBadRequestExceptions(RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUserNoteFoundException(UserNotFoundException ex) {
-        return new ResponseEntity<>("User already exists with this username or email", HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(NoteNotFoundException.class)
+    @ExceptionHandler(
+            {
+                    NoteNotFoundException.class,
+                    GroupNotFoundException.class
+            }
+    )
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleNoteNotFoundException(NoteNotFoundException ex) {
+    public ResponseEntity<String> handleNotFoundExceptions(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
-
-    @ExceptionHandler(GroupAlreadyExistException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handleGroupAlreadyFoundException(GroupAlreadyExistException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(GroupNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleGroupNotFoundException(GroupNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
 }
