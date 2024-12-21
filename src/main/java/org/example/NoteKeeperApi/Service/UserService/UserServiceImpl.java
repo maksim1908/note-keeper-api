@@ -14,7 +14,6 @@ public class UserServiceImpl {
     private final UserRepo userRepo;
 
     public UserDetailsService getDetailsService() {
-
         UserDetailsService detailsService = new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -23,7 +22,6 @@ public class UserServiceImpl {
                 return user;
             }
         };
-
         return detailsService;
     }
 }

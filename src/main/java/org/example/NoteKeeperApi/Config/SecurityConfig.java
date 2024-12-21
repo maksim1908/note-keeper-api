@@ -43,8 +43,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
@@ -60,8 +59,8 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html")
                         .permitAll()
-                        .requestMatchers("/api/note/**").hasAnyAuthority(AppRole.USER.name() ,AppRole.ADMIN.name())
-                        .requestMatchers("/api/group/**").hasAnyAuthority(AppRole.USER.name() ,AppRole.ADMIN.name())
+                        .requestMatchers("/api/note/**").hasAnyAuthority(AppRole.USER.name(), AppRole.ADMIN.name())
+                        .requestMatchers("/api/group/**").hasAnyAuthority(AppRole.USER.name(), AppRole.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

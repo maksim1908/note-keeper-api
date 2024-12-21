@@ -16,9 +16,11 @@ import java.util.function.Function;
 @Service
 public class JwtSecurityService {
     @Value("${secret.jwt-key}")
-    private static String SECRET_KEY;
+    private String SECRET_KEY;
+
     @Value("${jwt.expiration-time}")
     private long expirationTime;
+
     @Value("${jwt.refresh-expiration-time}")
     private long refreshExpirationTime;
 
