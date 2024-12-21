@@ -42,7 +42,7 @@ public class NoteController {
         return noteService.editNote(id, notePersistDto);
     }
 
-    @PutMapping("/{id}/move")
+    @PutMapping("/{id}/moveTo")
     public NoteResponseDto moveNoteToGroup(@PathVariable Long id,
                                             @RequestParam(required = true, name = "groupId") Long groupId) {
         return noteService.moveNoteToGroup(id, groupId);

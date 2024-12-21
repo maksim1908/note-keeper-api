@@ -89,7 +89,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
         Note note = noteRepo.findById(noteId)
                 .orElseThrow(NoteNotFoundException::new);
         Group foundedGroup = groupRepo.findById(destGroupId)
-                .orElseThrow(NoteNotFoundException::new);
+                .orElseThrow(GroupNotFoundException::new);
         note.setGroup(foundedGroup);
         return noteMapper.toDto(noteRepo.save(note));
     }
