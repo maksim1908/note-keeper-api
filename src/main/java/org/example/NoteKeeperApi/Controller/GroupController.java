@@ -7,6 +7,7 @@ import org.example.NoteKeeperApi.Dto.Group.GroupPersistDto;
 import org.example.NoteKeeperApi.Dto.Group.GroupResponseDto;
 import org.example.NoteKeeperApi.Dto.Group.GroupWithoutNotesDto;
 import org.example.NoteKeeperApi.Service.GroupService.GroupService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class GroupController {
 
     @PostMapping
     @Operation(summary = "Create new group")
+    @ResponseStatus(HttpStatus.CREATED)
     public GroupResponseDto createGroup(@RequestBody @Valid GroupPersistDto group) {
         return groupService.createGroup(group);
     }
@@ -44,6 +46,7 @@ public class GroupController {
     }
 
     @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete group by id")
     public void deleteGroup(@PathVariable Long id) {
         groupService.removeGroup(id);

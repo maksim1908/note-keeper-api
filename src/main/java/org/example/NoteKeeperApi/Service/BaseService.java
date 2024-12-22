@@ -16,7 +16,7 @@ public class BaseService {
     @Autowired
     private UserRepo userRepo;
 
-    protected User getActiveUser() {
+    protected final User getActiveUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> user = userRepo.findByUsername(auth.getName());
         if (user.isPresent()) {

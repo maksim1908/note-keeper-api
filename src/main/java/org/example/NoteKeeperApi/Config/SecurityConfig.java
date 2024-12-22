@@ -61,6 +61,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/api/note/**").hasAnyAuthority(AppRole.USER.name(), AppRole.ADMIN.name())
                         .requestMatchers("/api/group/**").hasAnyAuthority(AppRole.USER.name(), AppRole.ADMIN.name())
+                        .requestMatchers("/api/user/**").hasAnyAuthority(AppRole.USER.name(), AppRole.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

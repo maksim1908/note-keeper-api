@@ -38,12 +38,8 @@ public class NoteServiceImpl extends BaseService implements NoteService {
     @Override
     public NoteResponseDto getNoteById(Long noteId) {
         LOGGER.debug("getNoteById {}", noteId);
-//        Note note = Optional.ofNullable(noteRepo.findByIdAndUserId(noteId , getActiveUser().getId()))
-//                .orElseThrow(NoteNotFoundException::new);
         Note foundedNote = noteRepo.findByIdAndUserId(noteId, getActiveUser().getId());
-        if (foundedNote == null) {
-            throw new NoteNotFoundException();
-        }
+        if (foundedNote == null) throw new NoteNotFoundException();
         LOGGER.debug("founded note {}", foundedNote);
         return noteMapper.toDto(foundedNote);
     }
