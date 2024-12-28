@@ -18,19 +18,19 @@ import static org.example.NoteKeeperApi.Controller.AuthController.ROOT_PATH;
 public class AuthController {
     private final AuthService authService;
 
-    @Operation(summary = "registration")
+    @Operation(summary = "Register a new user", description = "Register a new user with the provided credentials.")
     @PostMapping("/register")
     public UserResponseDto register(@RequestBody @Valid UserRegisterDto registerRequestDto) {
         return authService.register(registerRequestDto);
     }
 
-    @Operation(summary = "sign-in")
+    @Operation(summary = "Sign in", description = "Authenticate a user and return a JWT token.")
     @PostMapping("/sign-in")
     public LoginResponseDto login(@RequestBody @Valid LoginRequestDto loginRequestDto) {
         return authService.login(loginRequestDto);
     }
 
-    @Operation(summary = "get new jwt token")
+    @Operation(summary = "Refresh JWT token", description = "Refresh an existing JWT token using a valid refresh token.")
     @PostMapping("/refresh-token")
     public RefreshTokenResponseDto refresh(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
         return authService.refresh(refreshTokenRequestDto);

@@ -40,9 +40,8 @@ public class GeneralExceptionHandler {
                     BadCredentialsException.class
             }
     )
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleBadRequestExceptions(RuntimeException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     @ExceptionHandler(
@@ -51,7 +50,6 @@ public class GeneralExceptionHandler {
                     GroupNotFoundException.class
             }
     )
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handleNotFoundExceptions(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }

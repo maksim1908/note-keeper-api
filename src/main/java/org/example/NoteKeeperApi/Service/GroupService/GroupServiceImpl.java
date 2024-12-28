@@ -12,11 +12,11 @@ import org.example.NoteKeeperApi.Repository.GroupRepo;
 import org.example.NoteKeeperApi.Service.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,12 +26,10 @@ public class GroupServiceImpl extends BaseService implements GroupService {
     private final Logger LOGGER = LoggerFactory.getLogger(GroupServiceImpl.class);
 
     @Override
-    public List<GroupWithoutNotesDto> getAllGroups() {
+    public Page<GroupWithoutNotesDto> getAllGroups(Pageable pageable) {
         LOGGER.debug("Get all groups");
-        return groupRepo.findAllByUserId(getActiveUser().getId())
-                .stream()
-                .map(groupMapper::toDtoWithoutNotes)
-                .collect(Collectors.toList());
+        return groupRepo.findAllByUserId(getActiveUser().getId(), pageable)
+                .map(groupMapper::toDtoWithoutNotes);
     }
 
     @Override

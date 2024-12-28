@@ -33,15 +33,13 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     public UserDetailsService getDetailsService() {
-        UserDetailsService detailsService = new UserDetailsService() {
+        return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                User user = userRepo.findByUsername(username)
+                return userRepo.findByUsername(username)
                         .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
-                return user;
             }
         };
-        return detailsService;
     }
 
     @Override

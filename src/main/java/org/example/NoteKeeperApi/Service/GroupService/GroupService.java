@@ -3,11 +3,12 @@ package org.example.NoteKeeperApi.Service.GroupService;
 import org.example.NoteKeeperApi.Dto.Group.GroupPersistDto;
 import org.example.NoteKeeperApi.Dto.Group.GroupResponseDto;
 import org.example.NoteKeeperApi.Dto.Group.GroupWithoutNotesDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 
 public interface GroupService {
-    List<GroupWithoutNotesDto> getAllGroups();
+    Page<GroupWithoutNotesDto> getAllGroups(Pageable pageable);
 
     GroupResponseDto getGroupById(Long id);
 

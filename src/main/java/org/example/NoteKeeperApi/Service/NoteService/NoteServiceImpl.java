@@ -75,18 +75,20 @@ public class NoteServiceImpl extends BaseService implements NoteService {
 
     @Override
     public void deleteNote(Long noteId) {
-        Note note = Optional.ofNullable(noteRepo.findByIdAndUserId(noteId, getActiveUser().getId()))
+        Note foundedNote = Optional.ofNullable(noteRepo.findByIdAndUserId(noteId, getActiveUser().getId()))
                 .orElseThrow(NoteNotFoundException::new);
-        noteRepo.delete(note);
+        noteRepo.delete(foundedNote);
     }
 
     @Override
     public NoteResponseDto moveNoteToGroup(Long noteId, Long destGroupId) {
-        Note note = noteRepo.findById(noteId)
+        LOGGER.debug("move note {} to group {}", noteId, destGroupId);
+        Note foundedNote = noteRepo.findById(noteId)
                 .orElseThrow(NoteNotFoundException::new);
         Group foundedGroup = groupRepo.findById(destGroupId)
                 .orElseThrow(GroupNotFoundException::new);
-        note.setGroup(foundedGroup);
-        return noteMapper.toDto(noteRepo.save(note));
+        foundedNote.setGroup(foundedGroup);
+        LOGGER.debug("moved note {} to group {}", noteId, destGroupId);
+        return noteMapper.toDto(noteRepo.save(foundedNote));
     }
 }

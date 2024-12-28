@@ -1,6 +1,8 @@
 package org.example.NoteKeeperApi.Repository;
 
 import org.example.NoteKeeperApi.Entity.Group;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +14,5 @@ public interface GroupRepo extends JpaRepository<Group, Long> {
 
     Group findByIdAndUserId(Long id, Long userId);
 
-    List<Group> findAllByUserId(Long userId);
+    Page<Group> findAllByUserId(Long userId, Pageable pageable);
 }
