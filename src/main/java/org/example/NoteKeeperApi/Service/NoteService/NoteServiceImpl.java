@@ -1,6 +1,7 @@
 package org.example.NoteKeeperApi.Service.NoteService;
 
 import lombok.RequiredArgsConstructor;
+import org.example.NoteKeeperApi.Dto.Note.NoteFilterDto;
 import org.example.NoteKeeperApi.Dto.Note.NotePersistDto;
 import org.example.NoteKeeperApi.Dto.Note.NoteResponseDto;
 import org.example.NoteKeeperApi.Entity.Group;
@@ -18,7 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -90,5 +93,16 @@ public class NoteServiceImpl extends BaseService implements NoteService {
         foundedNote.setGroup(foundedGroup);
         LOGGER.debug("moved note {} to group {}", noteId, destGroupId);
         return noteMapper.toDto(noteRepo.save(foundedNote));
+    }
+
+    @Override
+    public List<NoteResponseDto> getNotesByFilter(NoteFilterDto noteFilterDto) {
+
+        return noteRepo.findByFilter(
+                        noteFilterDto.getTitle(),
+                        getActiveUser().getId())
+                .stream()
+                .map(noteMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

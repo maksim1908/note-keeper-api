@@ -1,13 +1,12 @@
 package org.example.NoteKeeperApi.Controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.NoteKeeperApi.Dto.Note.NoteFilterDto;
 import org.example.NoteKeeperApi.Dto.Note.NotePersistDto;
 import org.example.NoteKeeperApi.Dto.Note.NoteResponseDto;
 import org.example.NoteKeeperApi.Service.NoteService.NoteService;
@@ -16,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.example.NoteKeeperApi.Controller.NoteController.ROOT_PATH;
 
@@ -49,6 +50,11 @@ public class NoteController {
     )
     public NoteResponseDto getNoteById(@PathVariable Long id) {
         return noteService.getNoteById(id);
+    }
+
+    @GetMapping("/search")
+    public List<NoteResponseDto> getNotesByFilter(@Valid NoteFilterDto filter) {
+        return noteService.getNotesByFilter(filter);
     }
 
     @PostMapping

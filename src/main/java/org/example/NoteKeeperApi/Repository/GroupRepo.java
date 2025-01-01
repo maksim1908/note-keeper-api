@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface GroupRepo extends JpaRepository<Group, Long> {
-    Group findByTitle(String title);
+    Group findByTitleAndUserId(String title,Long userId);
 
     Group findByIdAndUserId(Long id, Long userId);
 

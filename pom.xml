@@ -64,7 +64,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
+            <version>42.7.4</version> <!-- Проверьте актуальность версии -->
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

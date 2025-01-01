@@ -39,7 +39,7 @@ public class UserController {
     @Operation(summary = "Change user password", description = "Change the password of the authenticated user.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Password changed successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"  ),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PutMapping("/change-password")
@@ -52,7 +52,8 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "User updated successfully",
                     content = @Content(schema = @Schema(implementation = UserResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "Invalid request data"),
-            @ApiResponse(responseCode = "404", description = "User not found")
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PutMapping
     public UserResponseDto updateUser(@RequestBody @Valid UpdateUserRequestDto updateUserRequestDto) {

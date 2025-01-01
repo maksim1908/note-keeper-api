@@ -44,7 +44,7 @@ public class GroupServiceImpl extends BaseService implements GroupService {
     @Override
     public GroupResponseDto createGroup(GroupPersistDto groupPersistDto) {
         LOGGER.debug("Create group {}", groupPersistDto);
-        if (groupRepo.findByTitle(groupPersistDto.getTitle()) != null) {
+        if (groupRepo.findByTitleAndUserId(groupPersistDto.getTitle(), getActiveUser().getId()) != null) {
             throw new GroupAlreadyExistException();
         }
         Group newGroup = groupMapper.toEntity(groupPersistDto);
@@ -65,7 +65,7 @@ public class GroupServiceImpl extends BaseService implements GroupService {
         LOGGER.debug("Edit group ID = {}", groupId);
         Group group = Optional.ofNullable(groupRepo.findByIdAndUserId(groupId, getActiveUser().getId()))
                 .orElseThrow(GroupNotFoundException::new);
-        if (groupRepo.findByTitle(groupPersistDto.getTitle()) != null) {
+        if (groupRepo.findByTitleAndUserId(groupPersistDto.getTitle(), getActiveUser().getId()) != null) {
             throw new GroupAlreadyExistException();
         }
         group.setTitle(groupPersistDto.getTitle());

@@ -21,7 +21,7 @@ public class Group {
     @Column(name = "group_id")
     private Long id;
 
-    @Column(name = "title", nullable = false, length = 255, unique = true)
+    @Column(name = "title", nullable = false, length = 255)
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
