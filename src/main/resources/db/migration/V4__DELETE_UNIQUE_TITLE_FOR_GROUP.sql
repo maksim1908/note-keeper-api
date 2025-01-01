@@ -1,0 +1,1 @@
+ALTER TABLE _group DROP CONSTRAINT unique_title;
