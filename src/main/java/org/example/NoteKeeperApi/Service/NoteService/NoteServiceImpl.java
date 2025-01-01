@@ -97,7 +97,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
 
     @Override
     public List<NoteResponseDto> getNotesByFilter(NoteFilterDto noteFilterDto) {
-
+        LOGGER.debug("search note by title {}", noteFilterDto.getTitle());
         return noteRepo.findByFilter(
                         noteFilterDto.getTitle(),
                         getActiveUser().getId())
