@@ -72,6 +72,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
 
 
     @Override
+    @SneakyThrows
     public NoteResponseDto editNote(Long noteId, NotePersistDto notePersistDto) {
         LOGGER.debug("updateNote {}", noteId);
         Note foundedNote = noteRepo.findById(noteId)
@@ -79,14 +80,20 @@ public class NoteServiceImpl extends BaseService implements NoteService {
         foundedNote.setTitle(notePersistDto.getTitle());
         foundedNote.setContent(notePersistDto.getContent());
         foundedNote.setUpdatedAt(LocalDateTime.now());
+        if(notePersistDto.getReminderTime() != null) {
+            foundedNote.setReminderTime(notePersistDto.getReminderTime());
+            schedulerService.scheduleEmailReminder(foundedNote);
+        }
         LOGGER.debug("updated note {}", foundedNote);
-        return noteMapper.toDto(foundedNote);
+        return noteMapper.toDto(noteRepo.save(foundedNote));
     }
 
     @Override
+    @SneakyThrows
     public void deleteNote(Long noteId) {
         Note foundedNote = Optional.ofNullable(noteRepo.findByIdAndUserId(noteId, getActiveUser().getId()))
                 .orElseThrow(NoteNotFoundException::new);
+        schedulerService.cancelEmailReminder(foundedNote.getId());
         noteRepo.delete(foundedNote);
     }
 
