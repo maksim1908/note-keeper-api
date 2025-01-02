@@ -35,6 +35,8 @@ public class EmailReminderJob implements Job {
             variables.put("messageContent", noteContent);
             variables.put("username", username); // Добавляем имя пользователя
             emailService.sendEmail(email, subject, emailTemplate, variables);
+            note.setReminderTime(null);
+            noteRepo.save(note);
             LOGGER.info("Sent email reminder for note {} to {}", note.getId(), email);
         } else {
             LOGGER.warn("Note with ID {} not found or reminderTime is null", noteId);
