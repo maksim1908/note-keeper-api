@@ -16,5 +16,6 @@ public class NoteResponseDto {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private LocalDateTime reminderTime;
     private Long groupId;
 }

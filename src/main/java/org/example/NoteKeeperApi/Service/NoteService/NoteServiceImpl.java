@@ -1,6 +1,7 @@
 package org.example.NoteKeeperApi.Service.NoteService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.example.NoteKeeperApi.Dto.Note.NoteFilterDto;
 import org.example.NoteKeeperApi.Dto.Note.NotePersistDto;
 import org.example.NoteKeeperApi.Dto.Note.NoteResponseDto;
@@ -12,6 +13,7 @@ import org.example.NoteKeeperApi.Mapper.NoteMapper;
 import org.example.NoteKeeperApi.Repository.GroupRepo;
 import org.example.NoteKeeperApi.Repository.NoteRepo;
 import org.example.NoteKeeperApi.Service.BaseService;
+import org.example.NoteKeeperApi.Service.SchedulerService.SchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -28,8 +30,10 @@ import java.util.stream.Collectors;
 public class NoteServiceImpl extends BaseService implements NoteService {
     private final NoteRepo noteRepo;
     private final GroupRepo groupRepo;
+    private final SchedulerService schedulerService;
     private final Logger LOGGER = LoggerFactory.getLogger(NoteService.class);
     private final NoteMapper noteMapper;
+
 
     @Override
     public Page<NoteResponseDto> getAllNotes(Pageable pageable) {
@@ -48,6 +52,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
     }
 
     @Override
+    @SneakyThrows
     public NoteResponseDto createNote(NotePersistDto notePersistDto) {
         LOGGER.debug("createNote {}", notePersistDto);
         Note newNote = noteMapper.toEntity(notePersistDto);
@@ -60,9 +65,11 @@ public class NoteServiceImpl extends BaseService implements NoteService {
             newNote.setGroup(group);
         }
         Note createdNote = noteRepo.save(newNote);
+        schedulerService.scheduleEmailReminder(createdNote);
         LOGGER.debug("created note {}", createdNote);
         return noteMapper.toDto(createdNote);
     }
+
 
     @Override
     public NoteResponseDto editNote(Long noteId, NotePersistDto notePersistDto) {

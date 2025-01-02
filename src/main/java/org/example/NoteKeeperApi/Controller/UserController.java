@@ -39,7 +39,7 @@ public class UserController {
     @Operation(summary = "Change user password", description = "Change the password of the authenticated user.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Password changed successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid request data"  ),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PutMapping("/change-password")
