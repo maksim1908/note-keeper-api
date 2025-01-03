@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -80,7 +81,20 @@ public class NoteServiceImpl extends BaseService implements NoteService {
         foundedNote.setTitle(notePersistDto.getTitle());
         foundedNote.setContent(notePersistDto.getContent());
         foundedNote.setUpdatedAt(LocalDateTime.now());
-        if(notePersistDto.getReminderTime() != null) {
+        if (notePersistDto.getGroupId() != null) {
+            Group byIdAndUserId = groupRepo.findByIdAndUserId(notePersistDto.getGroupId(), getActiveUser().getId());
+            if (byIdAndUserId == null) {
+                throw new GroupNotFoundException();
+            }
+            foundedNote.setGroup(byIdAndUserId);
+        }
+        else{
+            foundedNote.setGroup(null);
+        }
+        if (notePersistDto.getReminderTime() != null) {
+            if (foundedNote.getReminderTime() != null) {
+                schedulerService.cancelEmailReminder(foundedNote.getId());
+            }
             foundedNote.setReminderTime(notePersistDto.getReminderTime());
             schedulerService.scheduleEmailReminder(foundedNote);
         }
@@ -93,7 +107,9 @@ public class NoteServiceImpl extends BaseService implements NoteService {
     public void deleteNote(Long noteId) {
         Note foundedNote = Optional.ofNullable(noteRepo.findByIdAndUserId(noteId, getActiveUser().getId()))
                 .orElseThrow(NoteNotFoundException::new);
-        schedulerService.cancelEmailReminder(foundedNote.getId());
+        if(foundedNote.getReminderTime() != null) {
+            schedulerService.cancelEmailReminder(foundedNote.getId());
+        }
         noteRepo.delete(foundedNote);
     }
 
@@ -116,6 +132,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
                         noteFilterDto.getTitle(),
                         getActiveUser().getId())
                 .stream()
+                .sorted(Comparator.comparing(Note::getCreatedAt))
                 .map(noteMapper::toDto)
                 .collect(Collectors.toList());
     }

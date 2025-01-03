@@ -60,5 +60,9 @@ public class UserController {
         return userService.updateUserInfo(updateUserRequestDto);
     }
 
+    @GetMapping("/me")
+    public UserResponseDto getMe(){
+        return userService.getUserMe();
+    }
     public static final String ROOT_PATH = "/api/user";
 }

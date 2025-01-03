@@ -86,4 +86,9 @@ public class UserServiceImpl extends BaseService implements UserService {
 
         return userMapper.toDto(userRepo.save(activeUser));
     }
+
+    @Override
+    public UserResponseDto getUserMe() {
+        return userMapper.toDto(getActiveUser());
+    }
 }

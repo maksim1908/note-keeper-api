@@ -10,4 +10,6 @@ public interface UserService {
     void changeUserPassword(ChangePasswordRequestDto changePasswordRequestDto);
 
     UserResponseDto updateUserInfo(UpdateUserRequestDto userResponseDto);
+
+    UserResponseDto getUserMe();
 }
