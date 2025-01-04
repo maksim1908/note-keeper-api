@@ -59,6 +59,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
     @SneakyThrows
     public NoteResponseDto createNote(NotePersistDto notePersistDto) {
         LOGGER.debug("createNote {}", notePersistDto);
+        notePersistDto.setTitle(notePersistDto.getTitle().trim());
         Note newNote = noteMapper.toEntity(notePersistDto);
         newNote.setCreatedAt(LocalDateTime.now());
         newNote.setUpdatedAt(LocalDateTime.now());
@@ -78,7 +79,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
     public NoteResponseDto editNote(Long noteId, NotePersistDto notePersistDto) {
         LOGGER.debug("updateNote {}", noteId);
         Note foundedNote = findNoteById(noteId);
-        foundedNote.setTitle(notePersistDto.getTitle());
+        foundedNote.setTitle(notePersistDto.getTitle().trim());
         foundedNote.setContent(notePersistDto.getContent());
         foundedNote.setUpdatedAt(LocalDateTime.now());
         updateNoteGroup(foundedNote, notePersistDto.getGroupId());
