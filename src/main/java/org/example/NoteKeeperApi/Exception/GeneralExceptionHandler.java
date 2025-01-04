@@ -40,8 +40,12 @@ public class GeneralExceptionHandler {
                     BadCredentialsException.class
             }
     )
-    public ResponseEntity<String> handleBadRequestExceptions(RuntimeException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, Object> handleBadRequestExceptions(RuntimeException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", ex.getMessage());
+        return response;
     }
 
     @ExceptionHandler(

@@ -33,7 +33,7 @@ public class AuthService {
             throw new UserAlreadyExistException();
         }
         if (userRepo.findByEmail(registerRequestDto.getEmail()) != null) {
-            throw new UserAlreadyExistException();
+            throw new UserAlreadyExistException("This email address already used");
         }
         User appUser = User.builder()
                 .username(registerRequestDto.getUsername())

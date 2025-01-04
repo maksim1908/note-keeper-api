@@ -14,12 +14,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class NotePersistDto {
     @NotNull
-    @Size(min = 1, max = 255, message = "Название должно быть от 1 символа до 255")
+    @Size(min = 1, max = 255, message = "Title must be between 1 and 255 characters.")
     private String title;
+
     @Nullable
     private String content;
+
     @Nullable
     private LocalDateTime reminderTime;
+
     @Nullable
     private Long groupId;
 }
