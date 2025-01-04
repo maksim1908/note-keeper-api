@@ -18,9 +18,9 @@ public class BaseService {
 
     protected final User getActiveUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<User> user = userRepo.findByUsername(auth.getName());
-        if (user.isPresent()) {
-            return user.get();
+        User user = userRepo.findByUsername(auth.getName());
+        if (user != null) {
+            return user;
         } else {
             String errorMsg = "Cannot get UserDetails from Security context";
             LOGGER.error(errorMsg);

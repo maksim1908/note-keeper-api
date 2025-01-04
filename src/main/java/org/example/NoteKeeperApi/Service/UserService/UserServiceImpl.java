@@ -36,8 +36,13 @@ public class UserServiceImpl extends BaseService implements UserService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepo.findByUsername(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+//                return userRepo.findByUsername(username)
+//                        .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+                User user = userRepo.findByUsername(username);
+                if (user == null) {
+                    throw new UsernameNotFoundException("Пользователь не найден");
+                }
+                return user;
             }
         };
     }
@@ -67,7 +72,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         User activeUser = getActiveUser();
 
         if (updateUserRequestDto.getUsername() != null) {
-            if (userRepo.findByUsername(updateUserRequestDto.getUsername()).isPresent()) {
+            if (userRepo.findByUsername(updateUserRequestDto.getUsername()) != null) {
                 throw new UserAlreadyExistException();
             }
             activeUser.setUsername(updateUserRequestDto.getUsername());

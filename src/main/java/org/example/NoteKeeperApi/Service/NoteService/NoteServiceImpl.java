@@ -21,9 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,17 +37,22 @@ public class NoteServiceImpl extends BaseService implements NoteService {
     @Override
     public Page<NoteResponseDto> getAllNotes(Pageable pageable) {
         LOGGER.debug("getAllNotes");
-        return noteRepo.findAllByUserId(getActiveUser().getId(), pageable)
+        return noteRepo.findAllByUserIdOrderByCreatedAtDesc(getActiveUser().getId(), pageable)
                 .map(noteMapper::toDto);
     }
 
     @Override
     public NoteResponseDto getNoteById(Long noteId) {
         LOGGER.debug("getNoteById {}", noteId);
-        Note foundedNote = noteRepo.findByIdAndUserId(noteId, getActiveUser().getId());
-        if (foundedNote == null) throw new NoteNotFoundException();
+        Note foundedNote = findNoteById(noteId);
         LOGGER.debug("founded note {}", foundedNote);
         return noteMapper.toDto(foundedNote);
+    }
+
+    private Note findNoteById(Long noteId) {
+        Note foundedNote = noteRepo.findByIdAndUserId(noteId, getActiveUser().getId());
+        if (foundedNote == null) throw new NoteNotFoundException();
+        return foundedNote;
     }
 
     @Override
@@ -71,43 +74,50 @@ public class NoteServiceImpl extends BaseService implements NoteService {
         return noteMapper.toDto(createdNote);
     }
 
-
     @Override
-    @SneakyThrows
     public NoteResponseDto editNote(Long noteId, NotePersistDto notePersistDto) {
         LOGGER.debug("updateNote {}", noteId);
-        Note foundedNote = noteRepo.findById(noteId)
-                .orElseThrow(NoteNotFoundException::new);
+        Note foundedNote = findNoteById(noteId);
         foundedNote.setTitle(notePersistDto.getTitle());
         foundedNote.setContent(notePersistDto.getContent());
         foundedNote.setUpdatedAt(LocalDateTime.now());
-        if (notePersistDto.getGroupId() != null) {
-            Group byIdAndUserId = groupRepo.findByIdAndUserId(notePersistDto.getGroupId(), getActiveUser().getId());
-            if (byIdAndUserId == null) {
-                throw new GroupNotFoundException();
-            }
-            foundedNote.setGroup(byIdAndUserId);
-        }
-        else{
-            foundedNote.setGroup(null);
-        }
-        if (notePersistDto.getReminderTime() != null) {
-            if (foundedNote.getReminderTime() != null) {
-                schedulerService.cancelEmailReminder(foundedNote.getId());
-            }
-            foundedNote.setReminderTime(notePersistDto.getReminderTime());
-            schedulerService.scheduleEmailReminder(foundedNote);
-        }
+        updateNoteGroup(foundedNote, notePersistDto.getGroupId());
+        updateReminderTime(foundedNote, notePersistDto.getReminderTime());
         LOGGER.debug("updated note {}", foundedNote);
         return noteMapper.toDto(noteRepo.save(foundedNote));
+    }
+
+    @SneakyThrows
+    private void updateReminderTime(Note note, LocalDateTime newReminderTime) {
+        if (newReminderTime != null) {
+            if (note.getReminderTime() != null) {
+                schedulerService.cancelEmailReminder(note.getId());
+            }
+            note.setReminderTime(newReminderTime);
+            schedulerService.scheduleEmailReminder(note);
+        } else {
+            note.setReminderTime(null);
+            schedulerService.cancelEmailReminder(note.getId());
+        }
+    }
+
+    private void updateNoteGroup(Note note, Long groupId) {
+        if (groupId != null) {
+            Group group = groupRepo.findByIdAndUserId(groupId, getActiveUser().getId());
+            if (group == null) {
+                throw new GroupNotFoundException();
+            }
+            note.setGroup(group);
+        } else {
+            note.setGroup(null);
+        }
     }
 
     @Override
     @SneakyThrows
     public void deleteNote(Long noteId) {
-        Note foundedNote = Optional.ofNullable(noteRepo.findByIdAndUserId(noteId, getActiveUser().getId()))
-                .orElseThrow(NoteNotFoundException::new);
-        if(foundedNote.getReminderTime() != null) {
+        Note foundedNote = findNoteById(noteId);
+        if (foundedNote.getReminderTime() != null) {
             schedulerService.cancelEmailReminder(foundedNote.getId());
         }
         noteRepo.delete(foundedNote);
@@ -116,8 +126,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
     @Override
     public NoteResponseDto moveNoteToGroup(Long noteId, Long destGroupId) {
         LOGGER.debug("move note {} to group {}", noteId, destGroupId);
-        Note foundedNote = noteRepo.findById(noteId)
-                .orElseThrow(NoteNotFoundException::new);
+        Note foundedNote = findNoteById(noteId);
         Group foundedGroup = groupRepo.findById(destGroupId)
                 .orElseThrow(GroupNotFoundException::new);
         foundedNote.setGroup(foundedGroup);
@@ -132,7 +141,6 @@ public class NoteServiceImpl extends BaseService implements NoteService {
                         noteFilterDto.getTitle(),
                         getActiveUser().getId())
                 .stream()
-                .sorted(Comparator.comparing(Note::getCreatedAt))
                 .map(noteMapper::toDto)
                 .collect(Collectors.toList());
     }

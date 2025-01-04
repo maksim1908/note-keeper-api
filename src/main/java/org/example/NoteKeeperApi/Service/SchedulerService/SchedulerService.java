@@ -3,7 +3,6 @@ package org.example.NoteKeeperApi.Service.SchedulerService;
 import lombok.RequiredArgsConstructor;
 import org.example.NoteKeeperApi.Entity.Note;
 import org.example.NoteKeeperApi.Job.EmailReminderJob;
-import org.example.NoteKeeperApi.Repository.NoteRepo;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +14,8 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 public class SchedulerService {
-    private final Scheduler scheduler;
-    private final NoteRepo noteRepo;
     private final Logger LOGGER = LoggerFactory.getLogger(SchedulerService.class);
+    private final Scheduler scheduler;
 
     public void scheduleEmailReminder(Note note) throws SchedulerException {
         if (note.getReminderTime() == null) return;
@@ -35,7 +33,7 @@ public class SchedulerService {
         if (isJobDeleted) {
             LOGGER.info("Reminder job for note with ID {} has been successfully canceled.", noteId);
         } else {
-            LOGGER.error("No reminder job found for note with ID {}. Could not cancel the reminder.", noteId);
+            LOGGER.warn("No reminder job found for note with ID {}. Could not cancel the reminder.", noteId);
         }
     }
 
@@ -43,7 +41,7 @@ public class SchedulerService {
         return JobBuilder.newJob(EmailReminderJob.class)
                 .withIdentity("emailReminderJob_" + note.getId())
                 .usingJobData("noteId", note.getId())
-                .storeDurably()
+                .storeDurably(false)
                 .build();
     }
 
@@ -56,4 +54,3 @@ public class SchedulerService {
                 .build();
     }
 }
-

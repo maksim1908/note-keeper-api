@@ -29,7 +29,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public UserResponseDto register(UserRegisterDto registerRequestDto) {
-        if (userRepo.findByUsername(registerRequestDto.getUsername()).isPresent()) {
+        if (userRepo.findByUsername(registerRequestDto.getUsername()) != null) {
             throw new UserAlreadyExistException();
         }
         if (userRepo.findByEmail(registerRequestDto.getEmail()) != null) {
@@ -53,8 +53,7 @@ public class AuthService {
                                 loginRequestDto.getPassword()
                         )
                 );
-        User user = userRepo.findByUsername(loginRequestDto.getUsername())
-                .orElseThrow(UserNotFoundException::new);
+        User user = findUserByUsername(loginRequestDto.getUsername());
         if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
             throw new BadCredentialsException("Passwords do not match");
         }
@@ -73,8 +72,7 @@ public class AuthService {
         String jwt = refreshTokenRequestDto.getRefreshToken();
         String username = jwtSecurityService.extractUsername(jwt);
 
-        User user = userRepo.findByUsername(username)
-                .orElseThrow(UserNotFoundException::new);
+        User user = findUserByUsername(username);
 
         if (jwtSecurityService.validateToken(jwt, user)) {
             RefreshTokenResponseDto refreshTokenResponseDto = new RefreshTokenResponseDto();
@@ -83,5 +81,13 @@ public class AuthService {
             return refreshTokenResponseDto;
         }
         return null;
+    }
+
+    private User findUserByUsername(String username) {
+        User user = userRepo.findByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        return user;
     }
 }

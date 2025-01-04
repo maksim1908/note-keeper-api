@@ -32,7 +32,6 @@ public class JwtSecurityService {
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
-                // .claim("field", "value") // Добавление других нужных полей в токен
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSigningKey())
@@ -62,7 +61,7 @@ public class JwtSecurityService {
                 .getPayload();
     }
 
-    // Получение имени юзера (он же почта)
+    // Получение имени юзера
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }

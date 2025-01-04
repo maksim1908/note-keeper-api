@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +34,15 @@ public class GroupServiceImpl extends BaseService implements GroupService {
     @Override
     public GroupResponseDto getGroupById(Long groupId) {
         LOGGER.debug("Get group by id = {}", groupId);
-        Group group = Optional.ofNullable(groupRepo.findByIdAndUserId(groupId, getActiveUser().getId()))
-                .orElseThrow(GroupNotFoundException::new);
-        LOGGER.debug("Group found {}", group);
-        return groupMapper.toDto(group);
+        Group foundedGroup = findGroupById(groupId);
+        LOGGER.debug("Group found {}", foundedGroup);
+        return groupMapper.toDto(foundedGroup);
+    }
+
+    private Group findGroupById(Long groupId) {
+        Group foundedGroup = groupRepo.findByIdAndUserId(groupId, getActiveUser().getId());
+        if (foundedGroup == null) throw new GroupNotFoundException();
+        return foundedGroup;
     }
 
     @Override
@@ -55,20 +59,18 @@ public class GroupServiceImpl extends BaseService implements GroupService {
     @Override
     public void removeGroup(Long groupId) {
         LOGGER.debug("Remove group ID = {}", groupId);
-        Group group = Optional.ofNullable(groupRepo.findByIdAndUserId(groupId, getActiveUser().getId()))
-                .orElseThrow(GroupNotFoundException::new);
-        groupRepo.delete(group);
+        Group foundedGroup = findGroupById(groupId);
+        groupRepo.delete(foundedGroup);
     }
 
     @Override
     public GroupResponseDto editGroup(Long groupId, GroupPersistDto groupPersistDto) {
         LOGGER.debug("Edit group ID = {}", groupId);
-        Group group = Optional.ofNullable(groupRepo.findByIdAndUserId(groupId, getActiveUser().getId()))
-                .orElseThrow(GroupNotFoundException::new);
+        Group foundedGroup = findGroupById(groupId);
         if (groupRepo.findByTitleAndUserId(groupPersistDto.getTitle(), getActiveUser().getId()) != null) {
             throw new GroupAlreadyExistException();
         }
-        group.setTitle(groupPersistDto.getTitle());
-        return groupMapper.toDto(groupRepo.save(group));
+        foundedGroup.setTitle(groupPersistDto.getTitle());
+        return groupMapper.toDto(groupRepo.save(foundedGroup));
     }
 }

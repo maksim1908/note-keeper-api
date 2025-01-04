@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface NoteRepo extends JpaRepository<Note, Long> {
-    Page<Note> findAllByUserId(Long userId, Pageable pageable);
+    Page<Note> findAllByUserIdOrderByCreatedAtDesc(Long userId, Pageable pageable);
 
     Note findByIdAndUserId(Long id, Long userId);
 
@@ -21,6 +21,7 @@ public interface NoteRepo extends JpaRepository<Note, Long> {
                 FROM Note n
                 WHERE (:title IS NULL OR LOWER(n.title) LIKE LOWER(CONCAT('%', :title, '%')))
                   AND n.user.id = :userId
+                ORDER BY n.createdAt DESC
             """)
     List<Note> findByFilter(
             @Param("title") String title,
