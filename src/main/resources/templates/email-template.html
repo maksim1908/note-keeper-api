@@ -65,9 +65,13 @@
         <h1>Notification</h1>
     </div>
     <div class="content">
-        <p class="greeting" th:text="'Dear ' + ${username} + ','"></p> <!-- Приветствие, жирным и большим шрифтом -->
+        <p class="greeting" th:text="'Dear ' + ${username} + ','"></p>
         <p>You have a new reminder for your note:</p>
-        <p class="note-content"><span th:text="${messageContent}"></span></p> <!-- Контент заметки, обычный шрифт -->
+        <p class="note-content">
+            <label>
+                <textarea th:utext="${messageContent}" style="width: 550px; height: 200px;"></textarea>
+            </label>
+        </p>
     </div>
     <div class="footer">
         <p>&copy; 2025 NoteKeeperApp. All rights reserved.</p>

@@ -21,7 +21,7 @@ public class EmailService {
     private final SpringTemplateEngine templateEngine;
     @Value("${spring.mail.username}")
     private String from;
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 
     public void sendEmail(String to, String subject, String templateName, Map<String, Object> variables) {
         try {
